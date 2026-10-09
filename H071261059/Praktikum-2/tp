@@ -1,0 +1,19 @@
+minuman = int(input("Pilih minuman (1/2/3): "))
+ukuran = input("Ukuran (besar/kecil): ").lower()
+
+match minuman:
+    case 1:
+       pesanan = "kopi"
+    case 2:
+        pesanan = "teh"
+    case 3:
+        pesanan = "jus"
+
+if ukuran == "besar":
+    tambahan = 1500
+else:
+    tambahan = 0
+
+print("Pesanan: ", pesanan)
+print(f"Total tambahan: Rp{tambahan}")
+
