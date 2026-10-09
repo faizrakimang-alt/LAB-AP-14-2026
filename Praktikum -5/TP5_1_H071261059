@@ -1,0 +1,53 @@
+def bersihkan_teks(teks):
+    ALFABET = "abcdefghijklmnopqrstuvwxyz"
+    hasil = ""
+
+    for karakter in teks:
+        karakter = karakter.lower()
+
+        if karakter in ALFABET:
+            hasil += karakter
+
+    return hasil
+
+
+def cek_palinrome(teks):
+    balik = "".join(reversed(teks))
+
+    if teks == balik:
+        return True, -1
+
+    for i in range(len(teks)):
+        if teks[i] != balik[i]:
+            return False, i
+
+def inti_palinrome(teks):
+    teks = bersihkan_teks(teks)
+
+    palindrom_terbaik = ""
+    indeks_terbaik = 0
+
+    for i in range(len(teks)):
+        for j in range(i + 1, len(teks) + 1):
+            bagian = teks[i:j]
+
+            hasil = cek_palinrome(bagian)
+
+            if hasil[0]:
+                if len(bagian) > len(palindrom_terbaik):
+                    palindrom_terbaik = bagian
+                    indeks_terbaik = i
+
+    return {
+        "teks": palindrom_terbaik,
+        "panjang": len(palindrom_terbaik),
+        "indeks_awal": indeks_terbaik
+    }
+
+
+teks = input("Masukkan teks: ")
+Bersih = bersihkan_teks(teks)
+hasil = inti_palinrome(Bersih)
+print()
+print("Teks Bersih :",Bersih)
+print("Output Terharapkan :", hasil)

@@ -1,0 +1,101 @@
+def deteksi_anomali_email(email):
+    anomali = []
+
+    if email.count("@") != 1:
+        anomali.append("Email harus memiliki tepat satu @")
+        return anomali
+
+    local, domain = email.split("@")
+
+    if local == "":
+        anomali.append("Bagian sebelum @ tidak boleh kosong")
+
+    if domain == "":
+        anomali.append("Bagian setelah @ tidak boleh kosong")
+
+    if " " in email:
+        anomali.append("Email tidak boleh mengandung spasi")
+
+    if local.startswith(".") or local.endswith("."):
+        anomali.append(
+            "Bagian local tidak boleh diawali atau diakhiri titik"
+        )
+
+    if ".." in local:
+        anomali.append(
+            "Bagian local tidak boleh memiliki dua titik berturut-turut"
+        )
+
+    if "." not in domain:
+        anomali.append("Domain harus memiliki titik")
+
+    if ".." in domain:
+        anomali.append(
+            "Domain tidak boleh memiliki dua titik berturut-turut"
+        )
+
+    if domain.endswith("."):
+        anomali.append("Domain tidak boleh diakhiri titik")
+
+    if not (
+        email.endswith(".com")
+        or email.endswith(".id")
+        or email.endswith(".ac.id")
+    ):
+        anomali.append(
+            "Email harus berakhiran .com, .id, atau .ac.id"
+        )
+
+    return anomali
+
+
+def cetak_daftar(daftar_email_valid, karakter_border):
+    if len(daftar_email_valid) == 0:
+        return
+
+    panjang_maksimal = len(max(daftar_email_valid, key=len))
+    lebar = panjang_maksimal + 4
+
+    border = karakter_border * lebar
+
+    print(border)
+
+    for email in daftar_email_valid:
+        print(
+            karakter_border
+            + " "
+            + email.ljust(panjang_maksimal)
+            + " "
+            + karakter_border
+        )
+
+    print(border)
+
+daftar_email_valid = []
+daftar_email = []
+
+while True:
+    email = input("Masukkan email (ketik tutup untuk berhenti): ")
+
+    if email.lower() == "tutup":
+        break
+
+    if email in daftar_email:
+        print("Email sudah dimasukkan sebelumnya.")
+        continue
+
+    daftar_email.append(email)
+
+    anomali = deteksi_anomali_email(email)
+
+    if len(anomali) == 0:
+        daftar_email_valid.append(email)
+        print("Email valid.")
+    else:
+        print("Email tidak valid.")
+
+        for kesalahan in anomali:
+            print("-", kesalahan)
+
+print("\nDaftar email valid:")
+cetak_daftar(daftar_email_valid, "*")
